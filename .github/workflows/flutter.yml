@@ -13,27 +13,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Check out your code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 2. Install the specified Flutter SDK
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
           channel: 'stable'
 
+      # 3. (Optional) Clean any previous build artifacts
+      - name: Clean project
+        run: flutter clean
+
+      # 4. Fetch dependencies
       - name: Install dependencies
         run: flutter pub get
 
+      # 5. Analyze for errors & warnings
       - name: Analyze project
         run: flutter analyze
 
+      # 6. Run your tests
       - name: Run tests
         run: flutter test
 
+      # 7. Build a release APK
       - name: Build APK
         run: flutter build apk --release
 
+      # 8. Upload the APK for download in Actions
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
