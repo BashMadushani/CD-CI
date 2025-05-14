@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # sapna
 
 A new Flutter project.
@@ -14,3 +15,7 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# Micro-SaaS-Development
+Advanced DevOps Practices for Enterprise-Scale Micro SaaS Development Course: System Administration &amp; Maintenance 
+>>>>>>> 0bb7fed6a4587cee953505dcb47865d33a1b2ace
