@@ -11,24 +11,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # 2. Set up Flutter SDK
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
           channel: 'stable'
 
-      # 3. Clean previous build artifacts
       - name: Clean project
         run: flutter clean
 
-      # 4. Cache pub dependencies
       - name: Cache Pub dependencies
         uses: actions/cache@v3
         with:
@@ -37,39 +33,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
-      # 5. Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Analyze code issues (continue on error)
       - name: Analyze project
         continue-on-error: true
         run: flutter analyze > analyze_report.txt
 
-      # 7. Upload analyze report
       - name: Upload analyze report
         uses: actions/upload-artifact@v4
         with:
           name: analyze_report
           path: analyze_report.txt
 
-      # 8. Run tests (continue on error)
       - name: Run tests
         continue-on-error: true
         run: flutter test > test_report.txt || true
 
-      # 9. Upload test report
       - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
           name: test_report
           path: test_report.txt
 
-      # 10. Build release APK (unsigned to avoid signing errors)
       - name: Build APK (unsigned)
-        run: flutter build apk --release --no-shrink
+        run: flutter build apk --release --no-shrink --no-sign
 
-      # 11. Upload APK artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
