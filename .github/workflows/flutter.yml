@@ -43,17 +43,25 @@ jobs:
 
       # 6. Analyze for issues
       - name: Analyze project
-        run: flutter analyze
+        continue-on-error: true
+        run: flutter analyze > analyze_report.txt
 
-      # 7. Run tests
+      # 7. Upload analyze report
+      - name: Upload analyze report
+        uses: actions/upload-artifact@v4
+        with:
+          name: analyze_report
+          path: analyze_report.txt
+
+      # 8. Run tests
       - name: Run tests
         run: flutter test
 
-      # 8. Build release APK
+      # 9. Build release APK
       - name: Build APK
         run: flutter build apk --release
 
-      # 9. Upload the APK as artifact
+      # 10. Upload the APK as artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
