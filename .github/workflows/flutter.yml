@@ -1,4 +1,4 @@
-name: Flutter CI/CD
+name: Flutter CI-CD
 
 on:
   push:
@@ -9,51 +9,52 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      # 1. Checkout your full repo (no shallow clone) and submodules
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0        # fetch all history so 'git' commands won’t fail
-          submodules: recursive  # if you’re using any git submodules
+          fetch-depth: 0
+          submodules: recursive
 
-      # 2. Set up Flutter SDK
+      # 2. Set up Flutter
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
           channel: 'stable'
 
-      # 3. Clean any leftover build or pub artifacts
+      # 3. Clean project
       - name: Clean project
         run: flutter clean
 
-      # 4. (Optional) Cache pub packages between runs
+      # 4. Cache Pub dependencies
       - name: Cache Pub dependencies
         uses: actions/cache@v3
         with:
           path: ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}}
           restore-keys: |
             ${{ runner.os }}-pub-
 
-      # 5. Fetch Dart & Flutter packages
+      # 5. Install dependencies
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Analyze for errors & warnings
+      # 6. Analyze for issues
       - name: Analyze project
         run: flutter analyze
 
-      # 7. Run your tests
+      # 7. Run tests
       - name: Run tests
         run: flutter test
 
-      # 8. Build a release APK
+      # 8. Build release APK
       - name: Build APK
         run: flutter build apk --release
 
-      # 9. Upload the APK for download in Actions
+      # 9. Upload the APK as artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
