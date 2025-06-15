@@ -56,10 +56,10 @@ jobs:
           name: test_report
           path: test_report.txt
 
-      - name: Build debug APK
-        run: flutter build apk --debug
+      - name: Build debug APK with verbose output
+        run: flutter build apk --debug -v
 
-      - name: Upload APK
+      - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
           name: debug-apk
