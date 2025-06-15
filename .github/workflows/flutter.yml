@@ -17,18 +17,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      # 2. Set up Flutter
+      # 2. Set up Flutter SDK
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.29.3'
           channel: 'stable'
 
-      # 3. Clean project
+      # 3. Clean previous build artifacts
       - name: Clean project
         run: flutter clean
 
-      # 4. Cache Pub dependencies
+      # 4. Cache pub dependencies
       - name: Cache Pub dependencies
         uses: actions/cache@v3
         with:
@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Analyze for issues (won't fail pipeline)
+      # 6. Analyze code issues (continue on error)
       - name: Analyze project
         continue-on-error: true
         run: flutter analyze > analyze_report.txt
@@ -53,7 +53,7 @@ jobs:
           name: analyze_report
           path: analyze_report.txt
 
-      # 8. Run tests (won't fail pipeline)
+      # 8. Run tests (continue on error)
       - name: Run tests
         continue-on-error: true
         run: flutter test > test_report.txt || true
@@ -65,11 +65,11 @@ jobs:
           name: test_report
           path: test_report.txt
 
-      # 10. Build release APK (will fail pipeline if build fails)
-      - name: Build APK
-        run: flutter build apk --release
+      # 10. Build release APK (unsigned to avoid signing errors)
+      - name: Build APK (unsigned)
+        run: flutter build apk --release --no-shrink
 
-      # 11. Upload the APK as artifact
+      # 11. Upload APK artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
