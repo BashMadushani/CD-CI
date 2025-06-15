@@ -21,7 +21,8 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
+          flutter-version: '3.10.6'
+          channel: 'stable'
 
       # 3. Clean project
       - name: Clean project
@@ -55,7 +56,7 @@ jobs:
       # 8. Run tests
       - name: Run tests
         continue-on-error: true
-        run: flutter test > test_report.txt 2>&1
+        run: flutter test > test_report.txt
 
       # 9. Upload test report
       - name: Upload test report
@@ -64,32 +65,12 @@ jobs:
           name: test_report
           path: test_report.txt
 
-      # 10. Build debug APK with verbose output
-      - name: Build debug APK
-        id: debug_build
-        continue-on-error: true
-        run: flutter build apk --debug -v > debug_report.txt 2>&1
+      # 10. Build release APK
+      - name: Build APK
+        run: flutter build apk --release
 
-      # 11. Upload debug report
-      - name: Upload debug report
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug_report
-          path: debug_report.txt
-
-      # 12. Build release APK
-      - name: Build release APK
-        run: flutter build apk --release -v 2>&1 | tee release_report.txt
-
-      # 13. Upload release report
-      - name: Upload release report
-        uses: actions/upload-artifact@v4
-        with:
-          name: release_report
-          path: release_report.txt
-
-      # 14. Upload the release APK
-      - name: Upload release APK
+      # 11. Upload the APK as artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: release-apk
