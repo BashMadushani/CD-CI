@@ -2,9 +2,9 @@ name: Flutter CI-CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -41,7 +41,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Analyze for issues
+      # 6. Analyze for issues (won't fail pipeline)
       - name: Analyze project
         continue-on-error: true
         run: flutter analyze > analyze_report.txt
@@ -53,7 +53,7 @@ jobs:
           name: analyze_report
           path: analyze_report.txt
 
-      # 8. Run tests (won't fail pipeline on failure)
+      # 8. Run tests (won't fail pipeline)
       - name: Run tests
         continue-on-error: true
         run: flutter test > test_report.txt || true
@@ -65,7 +65,7 @@ jobs:
           name: test_report
           path: test_report.txt
 
-      # 10. Build release APK
+      # 10. Build release APK (will fail pipeline if build fails)
       - name: Build APK
         run: flutter build apk --release
 
