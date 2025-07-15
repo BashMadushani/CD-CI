@@ -19,7 +19,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2' # ✅ Dart 3.7.2 is included
+          flutter-version: '3.32.6'  # ✅ Dart 3.7.2 included
           channel: 'stable'
 
       - name: Check Flutter and Dart version
