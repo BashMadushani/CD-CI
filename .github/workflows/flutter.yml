@@ -19,9 +19,11 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          # Flutter 3.7.x includes Dart 3.7.x
-          flutter-version: '3.7.x'
+          flutter-version: '3.22.0' # ✅ Dart 3.7.2 included
           channel: 'stable'
+
+      - name: Check Flutter and Dart version
+        run: flutter --version
 
       - name: Clean project
         run: flutter clean
@@ -30,7 +32,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.pub-cache
-          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}}
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pub-
 
@@ -65,4 +67,3 @@ jobs:
         with:
           name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
-
